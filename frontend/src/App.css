@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+.search-form {
+  display: flex;
+  width: 100%;
+  margin: 1rem 0;
+  max-width: 500px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 4px 0 0 4px;
+  color: white;
+}
+
+.search-button {
+  padding: 0.5rem 1rem;
+  background-color: #4b70e2;
+  color: white;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #3a5bc7;
+}
