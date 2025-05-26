@@ -155,7 +155,9 @@ export default function CurrentWeather() {
               );
 
               if (!locationResponse.ok) {
-                throw new Error(`HTTP error! status: ${locationResponse.status}`);
+                throw new Error(
+                  `HTTP error! status: ${locationResponse.status}`
+                );
               }
 
               const locationData = await locationResponse.json();

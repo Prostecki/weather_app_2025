@@ -52,3 +52,5 @@ pnpm dev
 Frontend: http://localhost:5173
 
 Backend API: http://localhost:3000
+
+weather-app-2025.png
