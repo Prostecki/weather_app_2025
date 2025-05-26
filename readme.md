@@ -33,22 +33,19 @@ cd weather_nodejs
 pnpm install
 ```
 
-Configuration
+### Configuration
 
 Create a .env file in the backend directory:
 
-# backend/.env
-
+```bash
 PORT=3000
-
+# Get you api from api key - https://www.weatherapi.com/
 WEATHER_API_KEY=your_weatherapi_com_key
-
 API_BASE_URL=https://api.weatherapi.com/v1
 
-Run Application:
-
+#Run Application:
 pnpm dev
-
+```
 Frontend: http://localhost:5173
 
 Backend API: http://localhost:3000
