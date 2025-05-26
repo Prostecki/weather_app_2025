@@ -53,4 +53,4 @@ Frontend: http://localhost:5173
 
 Backend API: http://localhost:3000
 
-<img src="weather-app-2025.png" alt="weather picture" width="200">
+<img src="weather-app-2025.png" alt="weather picture" width="400">
