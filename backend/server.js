@@ -14,8 +14,10 @@ app.listen(PORT, () => {
 });
 
 app.get("/weather/current", (req, res) => {
-  const city = req.query.city || "Stockholm";
-  const url = `${process.env.API_BASE_URL}/current.json?key=${process.env.WEATHER_API_KEY}&q=${city}`;
+  // Support both city name and coordinates
+  const query = req.query.city || req.query.q || "Stockholm";
+  const url = `${process.env.API_BASE_URL}/current.json?key=${process.env.WEATHER_API_KEY}&q=${query}`;
+
   fetchWeatherData(url)
     .then((data) => res.json(data))
     .catch((error) => {
@@ -25,9 +27,9 @@ app.get("/weather/current", (req, res) => {
 });
 
 app.get("/weather/forecast", (req, res) => {
-  const city = req.query.city || "Stockholm";
+  const query = req.query.city || req.query.q || "Stockholm";
   const days = req.query.days || 3;
-  const url = `${process.env.API_BASE_URL}/forecast.json?key=${process.env.WEATHER_API_KEY}&q=${city}&days=${days}`;
+  const url = `${process.env.API_BASE_URL}/forecast.json?key=${process.env.WEATHER_API_KEY}&q=${query}&days=${days}`;
 
   fetchWeatherData(url)
     .then((data) => res.json(data))
