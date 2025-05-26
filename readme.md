@@ -40,7 +40,9 @@ Create a .env file in the backend directory:
 # backend/.env
 
 PORT=3000
+
 WEATHER_API_KEY=your_weatherapi_com_key
+
 API_BASE_URL=https://api.weatherapi.com/v1
 
 Run Application:
@@ -48,4 +50,5 @@ Run Application:
 pnpm dev
 
 Frontend: http://localhost:5173
+
 Backend API: http://localhost:3000
