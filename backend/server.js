@@ -24,6 +24,19 @@ app.get("/weather/current", (req, res) => {
     });
 });
 
+app.get("/weather/forecast", (req, res) => {
+  const city = req.query.city || "Stockholm";
+  const days = req.query.days || 3;
+  const url = `${process.env.API_BASE_URL}/forecast.json?key=${process.env.WEATHER_API_KEY}&q=${city}&days=${days}`;
+
+  fetchWeatherData(url)
+    .then((data) => res.json(data))
+    .catch((error) => {
+      console.error("Error fetching forecast weather data:", error);
+      res.status(500).json({ error: "Failed to fetch forecast weather data" });
+    });
+});
+
 app.get("/api", (req, res) => {
   res.json({ message: "This is the API endpoint" });
 });

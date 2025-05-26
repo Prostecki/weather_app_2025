@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import SearchForm from "../components/SearchForm/SearchForm";
+import HourlyForecast from "./HourlyForecast";
 
 // Extracted weather detail item component for better reuse
 const WeatherDetailItem = ({ icon, label, value }) => (
@@ -139,22 +140,38 @@ const ErrorMessage = ({ message }) => (
 
 export default function CurrentWeather() {
   const [weatherData, setWeatherData] = useState(null);
+  const [forecastData, setForecastData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [currentCity, setCurrentCity] = useState(null);
 
+  // Fetch weather data function
   const fetchWeatherByCity = async (city) => {
     if (!city) return;
 
     setLoading(true);
     try {
-      const response = await fetch(
+      // Fetch current weather
+      const currentResponse = await fetch(
         `http://localhost:3000/weather/current?city=${city}`
       );
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (!currentResponse.ok) {
+        throw new Error(`HTTP error! status: ${currentResponse.status}`);
       }
-      const data = await response.json();
-      setWeatherData(data);
+      const currentData = await currentResponse.json();
+      setWeatherData(currentData);
+
+      // Fetch forecast data
+      const forecastResponse = await fetch(
+        `http://localhost:3000/weather/forecast?city=${city}&days=2`
+      );
+      if (!forecastResponse.ok) {
+        throw new Error(`HTTP error! status: ${forecastResponse.status}`);
+      }
+      const forecastData = await forecastResponse.json();
+      setForecastData(forecastData);
+
+      setCurrentCity(city); // Save current city for auto-refresh
       setError(null);
     } catch (error) {
       console.error("Error fetching weather data:", error);
@@ -163,6 +180,28 @@ export default function CurrentWeather() {
       setLoading(false);
     }
   };
+
+  // Set up hourly interval for weather updates
+  useEffect(() => {
+    // Only set up interval if we have a city to fetch for
+    if (!currentCity) return;
+
+    console.log(`Setting up hourly updates for ${currentCity}`);
+
+    // Initial fetch isn't necessary as it's done via the search
+
+    // Set up hourly refresh
+    const hourlyInterval = setInterval(() => {
+      console.log(`Refreshing weather data for ${currentCity}`);
+      fetchWeatherByCity(currentCity);
+    }, 60 * 60 * 1000); // 60 minutes * 60 seconds * 1000 milliseconds = 1 hour
+
+    // Clean up interval when component unmounts or city changes
+    return () => {
+      console.log("Clearing weather update interval");
+      clearInterval(hourlyInterval);
+    };
+  }, [currentCity]); // Re-create interval when city changes
 
   return (
     <div>
@@ -175,6 +214,8 @@ export default function CurrentWeather() {
       {!loading && !error && weatherData && (
         <CurrentWeatherView weatherData={weatherData} />
       )}
+      {/* Render hourly forecast if available */}
+      {forecastData && <HourlyForecast forecastData={forecastData} />}
     </div>
   );
 }
